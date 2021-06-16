@@ -11,7 +11,11 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      {
+        rel: 'stylesheet',
+        type:"text/css",
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.2/css/bulma.min.css'
+      }
     ]
   },
 
@@ -22,7 +26,13 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/balm-ui'
+    {
+      src: '~plugins/filters.js' ,
+      // src: '~/plugins/balm-ui'
+    }
+    // '@/plugins/filters.js',
+    // '@/plugins/balm-ui',
+    
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
