@@ -6,9 +6,34 @@
         <aside class="column is-2 aside hero">
           <div>
             <div class="compose has-text-centered">
-              <a class="button is-danger is-block is-bold">
-              <span class="compose">Create</span>
-              </a>
+              <Modal>
+                 <template #actionButton>
+                  <a class="button is-danger is-block is-bold">
+                    <span class="compose">Create</span>
+                  </a>
+                </template>
+                <form class="post-form">
+                  <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                      <input class="input" type="text" placeholder="Awesome Title">
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Subtitle</label>
+                    <div class="control">
+                      <input class="input" type="email" placeholder="Awesome subtitle">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">Content</label>
+                    <div class="control">
+                      <textarea class="textarea" placeholder="Awesome Content"></textarea>
+                    </div>
+                  </div>
+                </form>
+              </Modal>
             </div>
             <div class="main">
             </div>
@@ -57,8 +82,7 @@
         <div class="container">
           <div class="content has-text-centered">
             <p>
-              <strong>Bulma Templates</strong> by <a href="https://github.com/dansup">Daniel Supernault</a>. The source code is licensed
-              <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+              <strong>Copyright</strong> by <a href="https://github.com/dansup">Youssef Ashraf Awad</a>. 
             </p>
             <p>
               <a class="icon" href="https://github.com/dansup/bulma-templates">
@@ -76,16 +100,26 @@
 <script>
 import Navbar from '~/components/Navbar'
 import { mapState } from 'vuex'
+import Modal from '~/components/shared/Modal'
 
 export default {
   components: {
-    Navbar
+    Navbar , Modal
   },
   computed: {
     ...mapState({
-      posts: (state) => state.posts
+      posts: (state) => state.post.items
     })
   },
+
+   fetch({store}) {
+    if (store.getters['post/hasEmptyItems']) {
+      console.log('fetching data in manage page')
+      return store.dispatch('post/fetchPosts')
+    }
+  },
+
+
 }
 </script>
 <style scoped>
@@ -98,5 +132,9 @@ export default {
   .card:hover {
     cursor: pointer;
     background-color: #eeeeee;
+  }
+
+   .post-form {
+    text-align: left;
   }
 </style>

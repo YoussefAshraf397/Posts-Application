@@ -35,6 +35,7 @@
 import Navbar from '~/components/Navbar'
 import postItem from '~/components/postItem'
 
+
 export default{
   components:{
     Navbar,
@@ -47,26 +48,19 @@ export default{
 
     }
   },
+ fetch({store}) {
+    if (store.getters['post/hasEmptyItems']) {
+      console.log('fetching data in index page')
+      return store.dispatch('post/fetchPosts')
+    }
+  },
    computed: {
     posts() {
-      return this.$store.state.posts
+      return this.$store.state.post.items
     }
    },
-    mounted() {
-    this.$store.dispatch('fetchPosts')
-  },
 }
 </script>
 <style>
-  /* .post-content {
-    font-style: italic;
-  }
-  .post {
-    margin-bottom: 20px;
-    padding: 5px;
-    border-bottom: 2px solid transparent;
-  }
-  .post:hover {
-    border-bottom: 2px solid #e8e8e8;
-  } */
+
 </style>
