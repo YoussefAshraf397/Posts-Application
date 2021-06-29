@@ -1,4 +1,5 @@
 import {INITIAL_DATA} from './index'
+import Vue from 'vue'
 
 
 export const getters = {
@@ -29,6 +30,20 @@ export function fetchPostsAPI() {
           .then((posts) => {
             commit('setPosts', posts)
           })
+      } ,
+      createPost({commit}, postData) {
+        // create post on server, or perssist data in some way
+        postData._id = Math.random().toString(36).substr(2, 7)
+        postData.date = new Date()
+        commit('addPost', postData)
+      },
+      updatePost({commit, state}, postData) {
+
+        const index = state.items.findIndex((post) => {
+          return post._id === postData._id
+        })
+    
+        commit('replacePost', {post: postData, index})
       }
     }
   
@@ -38,6 +53,12 @@ export function fetchPostsAPI() {
     export const mutations = {
       setPosts(state, posts) {
         state.items = posts
+      },
+      addPost(state, post) {
+        state.items.push(post)
+      },
+      replacePost(state, {post, index}) {
+        Vue.set(state.items, index, post)
       }
     }
     

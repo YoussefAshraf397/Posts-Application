@@ -4,46 +4,15 @@
     <div class="manage-page">
       <div class="columns mail-app">
         <aside class="column is-2 aside hero">
-          <div>
-            <div class="compose has-text-centered">
-              <Modal>
-                 <template #actionButton>
-                  <a class="button is-danger is-block is-bold">
-                    <span class="compose">Create</span>
-                  </a>
-                </template>
-                <form class="post-form">
-                  <div class="field">
-                    <label class="label">Title</label>
-                    <div class="control">
-                      <input class="input" type="text" placeholder="Awesome Title">
-                    </div>
-                  </div>
-
-                  <div class="field">
-                    <label class="label">Subtitle</label>
-                    <div class="control">
-                      <input class="input" type="email" placeholder="Awesome subtitle">
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Content</label>
-                    <div class="control">
-                      <textarea class="textarea" placeholder="Awesome Content"></textarea>
-                    </div>
-                  </div>
-                </form>
-              </Modal>
-            </div>
-            <div class="main">
-            </div>
-          </div>
+              <post-create />
         </aside>
         <div class="column is-4 messages hero is-fullheight" id="message-feed">
           <div class="inbox-messages" id="inbox-messages">
             <div
               v-for="post in posts"
               :key="post._id"
+              @click="activatePost(post)"
+              :class="{'is-active': activePost && post._id === activePost._id}"
               class="card">
               <div class="card-content">
                 <div class="msg-header">
@@ -61,20 +30,9 @@
             </div>
           </div>
         </div>
-        <div class="column is-6 message hero is-fullheight is-hidden" id="message-pane">
+        <div class="column is-6 message hero is-fullheight " id="message-pane">
           <div class="box message-preview">
-            <div class="top">
-              <div class="avatar">
-                <img src="https://placehold.it/128x128">
-              </div>
-              <div class="address">
-                <div class="name">John Smith</div>
-                <div class="email">someone@gmail.com</div>
-              </div>
-              <hr>
-              <div class="content">
-              </div>
-            </div>
+            <post-mange :postData="activePost"/>
           </div>
         </div>
       </div>
@@ -82,7 +40,7 @@
         <div class="container">
           <div class="content has-text-centered">
             <p>
-              <strong>Copyright</strong> by <a href="https://github.com/dansup">Youssef Ashraf Awad</a>. 
+              <strong>Copyright</strong> by <a href="">Youssef Ashraf Awad</a>. 
             </p>
             <p>
               <a class="icon" href="https://github.com/dansup/bulma-templates">
@@ -100,11 +58,19 @@
 <script>
 import Navbar from '~/components/Navbar'
 import { mapState } from 'vuex'
-import Modal from '~/components/shared/Modal'
+import postCreate from '~/components/postCreate'
+import PostMange from '~/components/postMange.vue'
 
 export default {
   components: {
-    Navbar , Modal
+    Navbar , postCreate , PostMange
+    
+    
+  },
+  data() {
+    return {
+      activePost: {}
+    }
   },
   computed: {
     ...mapState({
@@ -118,20 +84,34 @@ export default {
       return store.dispatch('post/fetchPosts')
     }
   },
+   created() {
+    if (this.posts && this.posts.length > 0) {
+      this.activePost = this.posts[0]
+    }
+  },
+  methods: {
+    activatePost(post) {
+      this.activePost = post
+    }
+  }
 
 
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
   .manage-page {
     padding: 30px;
   }
   .card {
     margin-bottom: 10px;
-  }
-  .card:hover {
-    cursor: pointer;
-    background-color: #eeeeee;
+
+     &.is-active {
+      background-color: #eeeeee;
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: #eeeeee;
+    }
   }
 
    .post-form {
