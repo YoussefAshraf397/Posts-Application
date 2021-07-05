@@ -71,6 +71,14 @@ export function fetchPostsAPI() {
           return []
         }
       },
+      fetchPostById({commit}, postId) {
+        return this.$axios.$get('/api/posts')
+          .then((posts) => {
+            const selectedPost = posts.find((p) => p._id === postId)
+            commit('setPost', selectedPost)
+            return selectedPost
+          })
+      },
       updatePost({commit, state}, postData) {
 
         const index = state.items.findIndex((post) => {
@@ -125,6 +133,9 @@ export function fetchPostsAPI() {
       },
       setArchivedPosts(state, archivedPosts) {
         state.archivedItems = archivedPosts
+      },
+      setPost(state, post) {
+        state.item = post
       },
     }
     
