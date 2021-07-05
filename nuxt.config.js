@@ -16,13 +16,20 @@ export default {
         type:"text/css",
         href: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.2/css/bulma.min.css'
       }
-    ]
+    ],
+    script: [
+      { src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js'}
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    'balm-ui/dist/balm-ui.css'
+    'balm-ui/dist/balm-ui.css',
+    '@/assets/scss/main.scss'
+
   ],
+
+  
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
