@@ -1,4 +1,4 @@
-import {INITIAL_DATA} from './index'
+import INITIAL_DATA from './initial_data.json'
 import Vue from 'vue'
 
 
@@ -12,7 +12,7 @@ export function fetchPostsAPI() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(INITIAL_DATA.posts)
-      }, 200)
+      }, 0)
     })
   }
   
@@ -34,8 +34,13 @@ export function fetchPostsAPI() {
       createPost({commit}, postData) {
         // create post on server, or perssist data in some way
         postData._id = Math.random().toString(36).substr(2, 7)
-        postData.date = new Date()
-        commit('addPost', postData)
+        postData.createdAt = (new Date()).getTime()
+
+        return this.$axios.$post('/api/posts', postData)
+          .then((res) => {
+            console.log(res)
+            commit('addPost', postData)
+          })
       },
       updatePost({commit, state}, postData) {
 
@@ -43,7 +48,27 @@ export function fetchPostsAPI() {
           return post._id === postData._id
         })
     
-        commit('replacePost', {post: postData, index})
+        if (index !== -1) {
+          return this.$axios.$patch(`/api/posts/${postData._id}`, postData)
+            .then((res) => {
+              console.log(res)
+              commit('replacePost', {post: postData, index})
+              return postData
+            })
+        }
+      } ,
+      deletePost({commit, state}, postId) {
+        const index = state.items.findIndex((post) => {
+          return post._id === postId
+        })
+    
+        if (index !== -1) {
+          return this.$axios.$delete(`/api/posts/${postId}`)
+            .then((res) => {
+              commit('deletePost', index)
+              return postId
+            })
+        }
       }
     }
   
@@ -59,6 +84,9 @@ export function fetchPostsAPI() {
       },
       replacePost(state, {post, index}) {
         Vue.set(state.items, index, post)
+      },
+      deletePost(state, postIndex) {
+        state.items.splice(postIndex, 1)
       }
     }
     

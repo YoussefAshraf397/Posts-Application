@@ -1,0 +1,11 @@
+{
+  "posts": [
+    {
+      "title": "First Post title",
+      "subtitle": "First Post subtitle",
+      "content": "First Post content",
+      "_id": "lijzv2l",
+      "createdAt": 1625511364278
+    }
+  ]
+}
