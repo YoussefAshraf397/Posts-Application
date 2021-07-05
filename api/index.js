@@ -10,7 +10,7 @@ const filePath = '../store/initial_data.json'
 const initialData = require(filePath)
 
 app.get('/posts', (req, res) => {
-    return res.json({posts: 'Just some testi jhfdkjdfhkdjh ng data'})
+    return res.json(initialData.posts)
 })
 
 app.post('/posts', function(req, res) {
